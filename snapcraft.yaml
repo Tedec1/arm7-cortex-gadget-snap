@@ -5,30 +5,31 @@ description: |
  Bootloader files and partitoning data to create a
  bootable Ubuntu Core image for the ODYSSEY-STM32MP157C.
 type: gadget
+base: core20
 architectures:
   - armhf
 confinement: strict
 grade: stable
 parts:
   uboot:
-  plugin: make
-  source: git://git.denx.de/u-boot.git
-  source-branch: v2017.01
-  artifacts: [MLO, u-boot.img]
-  prepare: |
-    git apply ../../../uboot.patch
-    make am335x_boneblack_config
-  build: |
-    CROSS_COMPILE=arm-linux-gnueabi- make
-  install: |
-    cp MLO u-boot.img $SNAPCRAFT_PART_INSTALL/
-    tools/mkenvimage -r -s 131072 -o $SNAPCRAFT_PART_INSTALL/uboot.env ../../../uboot.env.in
-    cd $SNAPCRAFT_PART_INSTALL/; ln -s uboot.env uboot.conf
-  build-packages:
-    - libpython2.7-dev
-    - build-essential
-    - bc
-    - gcc-arm-linux-gnueabi
+    plugin: make
+    source: git://git.denx.de/u-boot.git
+    source-branch: v2017.01
+    artifacts: [MLO, u-boot.img]
+    prepare: |
+      git apply ../../../uboot.patch
+      make am335x_boneblack_config
+    build: |
+      CROSS_COMPILE=arm-linux-gnueabi- make
+    install: |
+      cp MLO u-boot.img $SNAPCRAFT_PART_INSTALL/
+      tools/mkenvimage -r -s 131072 -o $SNAPCRAFT_PART_INSTALL/uboot.env ../../../uboot.env.in
+      cd $SNAPCRAFT_PART_INSTALL/; ln -s uboot.env uboot.conf
+    build-packages:
+      - libpython2.7-dev
+      - build-essential
+      - bc
+      - gcc-arm-linux-gnueabi
 slots:
   bcm-gpio-0:
     interface: gpio

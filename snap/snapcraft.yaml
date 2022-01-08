@@ -13,12 +13,12 @@ grade: stable
 parts:
   uboot:
     plugin: make
-    source: git://git.denx.de/u-boot.git
-    source-branch: v2017.01
+    source: https://github.com/STMicroelectronics/u-boot.git
+    source-branch: v2020.10-stm32mp
     artifacts: [MLO, u-boot.img]
     prepare: |
-      git apply ../../../uboot.patch
-      make am335x_boneblack_config
+      make stm32mp15_trusted_defconfig
+      make DEVICE_TREE=arc/arm/dts/stm32mp157c-odyessey.dts all
     build: |
       CROSS_COMPILE=arm-linux-gnueabi- make
     install: |

@@ -1,0 +1,7 @@
+name: arm7-odyssey
+title: STM32MP157C-ODYSSEY Gadget snap
+version: 1.0
+type: gadget
+architectures: |
+  -armhf
+base: core20

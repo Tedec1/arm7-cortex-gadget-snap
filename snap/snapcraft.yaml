@@ -15,21 +15,23 @@ parts:
     plugin: make
     source: https://github.com/STMicroelectronics/u-boot.git
     source-branch: v2020.10-stm32mp
-    artifacts: [MLO, u-boot.img]
-    prepare: |
+    # make-parameters: |
+    override-build: |
+      CROSS_COMPILE=arm-linux-gnueabi- make
       make stm32mp15_trusted_defconfig
       make DEVICE_TREE=arc/arm/dts/stm32mp157c-odyessey.dts all
-    build: |
-      CROSS_COMPILE=arm-linux-gnueabi- make
-    install: |
-      cp MLO u-boot.img $SNAPCRAFT_PART_INSTALL/
-      tools/mkenvimage -r -s 131072 -o $SNAPCRAFT_PART_INSTALL/uboot.env ../../../uboot.env.in
-      cd $SNAPCRAFT_PART_INSTALL/; ln -s uboot.env uboot.conf
+    # artifacts: [MLO, u-boot.img]
+    # prepare: |
+    #   make stm32mp15_trusted_defconfig
+    #   make DEVICE_TREE=arc/arm/dts/stm32mp157c-odyessey.dts all
+    # build: |
+    #   CROSS_COMPILE=arm-linux-gnueabi- make
+    # install: |
+    #   cp MLO u-boot.img $SNAPCRAFT_PART_INSTALL/
+    #   tools/mkenvimage -r -s 131072 -o $SNAPCRAFT_PART_INSTALL/uboot.env ../../../uboot.env.in
+    #   cd $SNAPCRAFT_PART_INSTALL/; ln -s uboot.env uboot.conf
     build-packages:
-      - libpython2.7-dev
-      - build-essential
-      - bc
-      - gcc-arm-linux-gnueabi
+      [libpython2.7-dev, build-essential, bc, gcc-arm-linux-gnueabi]
 slots:
   bcm-gpio-0:
     interface: gpio
